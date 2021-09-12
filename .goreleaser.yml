@@ -1,0 +1,51 @@
+before:
+  hooks:
+    # you may remove this if you don't use vgo
+    - go mod download
+builds:
+- env:
+  - CGO_ENABLED=0
+  goos:
+    - linux
+    - darwin
+    - windows
+  goarch:
+    - amd64
+archives:
+- replacements:
+    darwin: Darwin
+    linux: Linux
+    windows: Windows
+    386: i386
+    amd64: x86_64
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
+github_urls:
+  api: https://github.com/api/v3/
+  upload: https://github.com/api/uploads/
+  download: https://github.com/
+  # set to true if you use a self-signed certificate
+  skip_tls_verify: false
+brews:
+  -
+    name: awsssh
+    # Repository to push the tap to.
+    tap:
+      owner: roadmapper
+      name: homebrew
+    url_template: "http://github.com/roadmapper/awsssh/releases/{{ .Tag }}/{{ .ArtifactName }}"
+    commit_author:
+      name: Vinay Dandekar
+      email: vindansam@hotmail.com
+    folder: Formula
+    homepage: "https://github.com/roadmapper/awsssh"
+    description: "https://github.com/roadmapper/awsssh"
+    skip_upload: false
